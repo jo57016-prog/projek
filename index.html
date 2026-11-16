@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voucher Net - Proyek TKJ</title>
+
+  <!-- Font Awesome untuk ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-pV6N0LrHg3Kx2PQpW3hK6b/kR+r+6p5fkl6Ozj0zZpq2+zKZP7kE6kPNF0aNggf6GdLz5iV6Rg8t8qY+pKwXAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    body { 
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+      /* Background gradient keren + pattern halus */
+      background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 50%, #b2ebf2 100%);
+      background-image: radial-gradient(circle, rgba(0,188,212,0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    /* Header */
+    header { background: linear-gradient(90deg, #00BCD4, #00E0B8); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 10; }
+    header img { height: 50px; margin-right: 10px; }
+    nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: 600; transition: opacity 0.3s, color 0.3s; }
+    nav a:hover { opacity: 0.8; color: #FF9800; }
+
+    main { padding: 60px 10%; }
+
+    h1, h2 { color: #0097a7; text-align: center; }
+
+    /* Hero */
+    .hero { text-align: center; padding: 60px 20px; background: linear-gradient(120deg, #00BCD4, #00E0B8); color: white; border-radius: 20px; margin-bottom: 60px; }
+    .hero h1 { font-size: 2.5em; margin-bottom: 10px; }
+    .hero p { font-size: 1.1em; opacity: 0.9; }
+
+    /* Peralatan */
+    .peralatan { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 40px; }
+    .alat { background-color: #F1F1F1; border-radius: 12px; overflow: hidden; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; transform: translateY(0); transition: all 0.4s ease; border: 2px solid #4CAF50; }
+    .alat:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 10px 25px rgba(0,188,212,0.3); border-color: #FF9800; }
+    .alat img { width: 100%; height: 180px; object-fit: cover; }
+    .alat h3 { color: #0097a7; padding: 15px; }
+
+    /* Tim */
+    .tim { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 50px; }
+    .anggota { width: 200px; perspective: 1000px; text-align: center; }
+    .anggota-inner { transition: transform 0.5s; transform-style: preserve-3d; }
+    .anggota:hover .anggota-inner { transform: rotateY(15deg) rotateX(10deg) translateZ(10px); }
+    .anggota img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid #00BCD4; box-shadow: 0 8px 20px rgba(0,188,212,0.3); }
+    .anggota h3 { color: #0097a7; margin: 5px 0; }
+    .anggota p { font-size: 0.9em; color: #555; }
+
+    /* Hubungi */
+    .hubungi { margin-top: 60px; text-align: center; }
+    .hubungi form { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 15px; }
+    .hubungi input, .hubungi textarea { padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 1em; }
+    .hubungi button { background: #FF9800; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+    .hubungi button:hover { background: #E65100; }
+    .kontak { margin-top: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .kontak a { text-decoration: none; color: #4CAF50; font-weight: 600; transition: opacity 0.3s, color 0.3s; }
+    .kontak a:hover { opacity: 0.8; color: #FF9800; }
+    .kontak i { margin-right: 8px; }
+
+    /* Footer */
+    footer { background: linear-gradient(90deg, #00BCD4, #00E0B8); color: white; text-align: center; padding: 20px; margin-top: 80px; border-top-left-radius: 20px; border-top-right-radius: 20px; }
+
+    /* Popup */
+    .popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: opacity 0.4s ease; }
+    .popup.active { visibility: visible; opacity: 1; }
+    .popup-content { background: #F1F1F1; border-radius: 12px; padding: 30px; max-width: 500px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 2px solid #4CAF50; }
+    .popup-content img { width: 100%; border-radius: 10px; }
+    .close-btn { background: #FF9800; border: none; color: white; padding: 10px 20px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+    .close-btn:hover { background: #E65100; }
+
+    /* Animasi Scroll */
+    .fade-in-scroll { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+    .fade-in-scroll.visible { opacity: 1; transform: translateY(0); }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex; align-items:center; gap:10px;"><img src="logo-proyek.png" alt="Logo Proyek"><h2>Voucher Net</h2></div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#peralatan">Peralatan</a>
+    <a href="#cara-kerja">Cara Kerja</a>
+    <a href="#tim">Tim Kami</a>
+    <a href="#hubungi">Hubungi Kami</a>
+    <a href="#tentang">Tentang</a>
+  </nav>
+</header>
+
+<main>
+  <section id="home" class="hero fade-in-scroll">
+    <h1>Selamat Datang di Proyek Voucher Net</h1>
+    <p>Proyek jaringan WiFi dengan sistem voucher internet buatan siswa TKJ. Website ini menjelaskan peralatan, cara kerja, dan tim pengembangnya.</p>
+  </section>
+
+  <section id="peralatan" class="fade-in-scroll">
+    <h2>Peralatan yang Digunakan</h2>
+    <div class="peralatan">
+      <div class="alat" onclick="openPopup(1)"><img src="alat1.jpg" alt="Alat 1"><h3>Nama Alat 1</h3></div>
+      <div class="alat" onclick="openPopup(2)"><img src="alat2.jpg" alt="Alat 2"><h3>Nama Alat 2</h3></div>
+      <div class="alat" onclick="openPopup(3)"><img src="alat3.jpg" alt="Alat 3"><h3>Nama Alat 3</h3></div>
+      <div class="alat" onclick="openPopup(4)"><img src="alat4.jpg" alt="Alat 4"><h3>Nama Alat 4</h3></div>
+      <div class="alat" onclick="openPopup(5)"><img src="alat5.jpg" alt="Alat 5"><h3>Nama Alat 5</h3></div>
+      <div class="alat" onclick="openPopup(6)"><img src="alat6.jpg" alt="Alat 6"><h3>Nama Alat 6</h3></div>
+    </div>
+  </section>
+
+  <section id="cara-kerja" class="fade-in-scroll">
+    <h2>Cara Kerja Voucher Net</h2>
+    <p style="text-align:center; max-width:700px; margin:auto;">Pengguna terhubung ke jaringan WiFi dan diarahkan ke halaman login untuk memasukkan kode voucher. Setelah validasi, pengguna bisa menikmati akses internet sesuai durasi voucher yang diberikan.</p>
+  </section>
+
+  <section id="tim" class="fade-in-scroll">
+    <h2>Tim Pengembang</h2>
+    <div class="tim">
+      <div class="anggota"><div class="anggota-inner"><img src="team1.jpg" alt="Anggota 1"><h3>Nama Anggota 1</h3><p>Peran / Tugas</p></div></div>
+      <div class="anggota"><div class="anggota-inner"><img src="team2.jpg" alt="Anggota 2"><h3>Nama Anggota 2</h3><p>Peran / Tugas</p></div></div>
+      <div class="anggota"><div class="anggota-inner"><img src="team3.jpg" alt="Anggota 3"><h3>Nama Anggota 3</h3><p>Peran / Tugas</p></div></div>
+      <div class="anggota"><div class="anggota-inner"><img src="team4.jpg" alt="Anggota 4"><h3>Nama Anggota 4</h3><p>Peran / Tugas</p></div></div>
+      <div class="anggota"><div class="anggota-inner"><img src="team5.jpg" alt="Anggota 5"><h3>Nama Anggota 5</h3><p>Peran / Tugas</p></div></div>
+      <div class="anggota"><div class="anggota-inner"><img src="team6.jpg" alt="Anggota 6"><h3>Nama Anggota 6</h3><p>Peran / Tugas</p></div></div>
+    </div>
+  </section>
+
+  <section id="hubungi" class="hubungi fade-in-scroll">
+    <h2>Hubungi Kami</h2>
+    <form>
+      <input type="text" placeholder="Nama" required>
+      <input type="email" placeholder="Email" required>
+      <textarea placeholder="Pesan" rows="5" required></textarea>
+      <button type="submit">Kirim</button>
+    </form>
+    <div class="kontak">
+      <a href="https://www.instagram.com/dummy_ig/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+      <a href="https://wa.me/6281234567890" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <a href="mailto:email@voucher-net.com"><i class="fas fa-envelope"></i> Email</a>
+    </div>
+  </section>
+
+  <section id="tentang" class="fade-in-scroll">
+    <h2>Tentang Kami</h2>
+    <p style="text-align:center; max-width:700px; margin:auto;">(Isi bagian ini nanti dengan informasi tentang kelompok, ide, dan proses pengerjaan proyekmu.)</p>
+  </section>
+</main>
+
+<footer>
+  <p>© 2025 Proyek Voucher Net - TKJ | SMK Anda</p>
+</footer>
+
+<!-- Popup -->
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <img id="popupImg" src="" alt="">
+    <h3 id="popupTitle"></h3>
+    <p id="popupText"></p>
+    <button class="close-btn" onclick="closePopup()">Tutup</button>
+  </div>
+</div>
+
+<script>
+  // Data alat
+  const alatData = {
+    1: {title: 'Nama Alat 1', img: 'alat1.jpg', text: 'Penjelasan alat 1 akan kamu isi di sini.'},
+    2: {title: 'Nama Alat 2', img: 'alat2.jpg', text: 'Penjelasan alat 2 akan kamu isi di sini.'},
+    3: {title: 'Nama Alat 3', img: 'alat3.jpg', text: 'Penjelasan alat 3 akan kamu isi di sini.'},
+    4: {title: 'Nama Alat 4', img: 'alat4.jpg', text: 'Penjelasan alat 4 akan kamu isi di sini.'},
+    5: {title: 'Nama Alat 5', img: 'alat5.jpg', text: 'Penjelasan alat 5 akan kamu isi di sini.'},
+    6: {title: 'Nama Alat 6', img: 'alat6.jpg', text: 'Penjelasan alat 6 akan kamu isi di sini.'},
+  };
+
+  function openPopup(id) {
+    const popup = document.getElementById('popup');
+    const data = alatData[id];
+    document.getElementById('popupImg').src = data.img;
+    document.getElementById('popupTitle').innerText = data.title;
+    document.getElementById('popupText').innerText = data.text;
+    popup.classList.add('active');
+  }
+
+  function closePopup() { document.getElementById('popup').classList.remove('active'); }
+
+  // Animasi saat scroll
+  const faders = document.querySelectorAll('.fade-in-scroll');
+
+  const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
+
+  const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('visible');
+      appearOnScroll.unobserve(entry.target);
+    });
+  }, appearOptions);
+
+  faders.forEach(fader => appearOnScroll.observe(fader));
+</script>
+
+</body>
+</html>
